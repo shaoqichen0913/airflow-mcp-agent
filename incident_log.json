@@ -1,1 +1,20 @@
-[]
+[
+  {
+    "timestamp": "2026-05-06T14:23:00Z",
+    "dag_id": "dag_code_bug",
+    "error_type": "KeyError",
+    "error_message": "KeyError: 'user_id'",
+    "diagnosis": "Deterministic code bug — schema_dict is built from ['username', 'email', 'created_at'] and does not contain 'user_id'. This is not a transient error; retrying will always fail.",
+    "action_taken": "Escalated to human. Recommended: add 'user_id' to schema list or update the access key.",
+    "outcome": "pending human fix"
+  },
+  {
+    "timestamp": "2026-05-07T15:09:11Z",
+    "dag_id": "dag_code_bug",
+    "error_type": "KeyError",
+    "error_message": "KeyError: 'user_id'",
+    "diagnosis": "Same deterministic code bug confirmed via historical record match (2026-05-06). schema_dict at line 9 of dag_code_bug.py accesses key 'user_id' which does not exist in the dict. Code has not been fixed since prior incident. Retrying is pointless — this is a pure code defect.",
+    "action_taken": "Skipped retry analysis (history confirms retries ineffective). Escalated again to human with reference to prior incident. Fix required: add 'user_id' to schema_dict keys in dag_code_bug.py line 9, or replace the key access with the correct field name.",
+    "outcome": "re-escalated to human — fix still pending"
+  }
+]
