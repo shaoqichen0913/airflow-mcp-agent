@@ -12,6 +12,9 @@
   },
   "permissions": {
     "allow": [
+      "Write",
+      "Edit",
+      "Bash",
       "mcp__airflow__post_dag_run",
       "mcp__airflow__get_dag_run",
       "mcp__airflow__get_dag_runs",
