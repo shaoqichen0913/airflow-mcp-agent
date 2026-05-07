@@ -23,7 +23,18 @@
       "mcp__airflow__get_mapped_task_instances",
       "mcp__airflow__get_log",
       "mcp__airflow__get_xcom_entries",
-      "mcp__airflow__get_xcom_entry"
+      "mcp__airflow__get_xcom_entry",
+      "mcp__airflow__post_clear_task_instances",
+      "mcp__airflow__post_set_task_instances_state",
+      "mcp__airflow__patch_task_instance",
+      "mcp__airflow__update_dag_run_state",
+      "mcp__github__create_issue",
+      "mcp__github__list_commits",
+      "mcp__github__get_file_contents",
+      "mcp__github__search_repositories",
+      "mcp__github__get_issue",
+      "mcp__github__list_issues",
+      "mcp__github__create_issue_comment"
     ]
   }
 }
