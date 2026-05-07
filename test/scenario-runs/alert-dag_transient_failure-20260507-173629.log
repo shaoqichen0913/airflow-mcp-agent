@@ -1,0 +1,28 @@
+The retry run completed successfully on the first poll. Here is the final outcome:
+
+---
+
+## Autonomous Ops — Final Report
+
+**DAG:** `dag_transient_failure`
+
+| Step | Result |
+|---|---|
+| Most recent failed run | `manual__2026-05-07T15:09:11.769824+00:00` |
+| Failed task | `sync_data` (try 1 of 1) |
+| Error class | `ConnectionError` |
+| Error message | `External API timeout: failed to reach data-service after 3 retries` |
+| Classification | **TRANSIENT** |
+| Decision | Auto-retry — network timeouts are not code bugs |
+
+**Retry outcome: SUCCESS**
+
+| | |
+|---|---|
+| New run ID | `manual__2026-05-07T15:38:12.717539+00:00` |
+| Final state | `success` |
+| Run duration | ~1.06s (start→end) |
+| Total elapsed (trigger→success) | ~2s |
+| Polls needed | 1 |
+
+**Rationale:** The failure log showed a `ConnectionError` with "External API timeout" — a classic transient network failure. The DAG's retry counter (`transient_failure_run_count`) was already advanced to `1` by the failed run, so the second run executed the success path, printing "Data sync complete. 142 records processed." and resetting the counter to `0`. No human intervention required.

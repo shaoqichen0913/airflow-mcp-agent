@@ -1,0 +1,37 @@
+## Step 6: Investigation Summary
+
+---
+
+### What Failed and When
+
+| Field | Value |
+|---|---|
+| DAG | `dag_pipeline_failure` |
+| Run ID | `manual__2026-05-07T15:09:14.580823+00:00` |
+| Started | 2026-05-07 15:09:51 UTC |
+| Failed | 2026-05-07 15:09:53 UTC |
+
+### Which Task and What Error
+
+**Task:** `process_data` (attempt 1, no retries)
+
+**Error:**
+```
+File "/opt/airflow/dags/dag_pipeline_failure.py", line 15, in process_data
+    ts = record["event_timestamp"]
+KeyError: 'event_timestamp'
+```
+
+The `process_data` function tries to read `record["event_timestamp"]`, but the record dictionary contains key `"ts"` — the two are out of sync.
+
+### Culprit Commit
+
+**Commit `ebdc95c`** — `"refactor: rename event_timestamp to ts in pipeline schema"` (Shaoqi Chen, 2026-05-07T14:53:20Z)
+
+This commit updated the data records to use `"ts"` as the key but left the consumer code at `dag_pipeline_failure.py:15` still referencing `"event_timestamp"`. The preceding commit `bf24116` originally introduced both data and consumer using `event_timestamp` consistently — the refactor broke that consistency.
+
+### GitHub Issue
+
+**Issue #2 opened:** https://github.com/shaoqichen0913/airflow-mcp-agent/issues/2
+
+The issue includes the full traceback, the suspected commit SHA (`ebdc95c`), author, date, and a one-step fix recommendation: change `record["event_timestamp"]` → `record["ts"]` at `dags/dag_pipeline_failure.py:15`.

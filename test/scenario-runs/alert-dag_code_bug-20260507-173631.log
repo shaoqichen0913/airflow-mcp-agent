@@ -1,0 +1,13 @@
+---
+
+**Final Decision & Rationale**
+
+| Field | Value |
+|---|---|
+| **Action taken** | `escalated` — no retry |
+| **Outcome** | `escalated_no_retry` |
+| **Error type** | `DETERMINISTIC` |
+| **Error message** | `KeyError: 'user_id'` |
+| **Root cause** | `schema_dict["user_id"]` at `dag_code_bug.py:9` — key absent from schema definition |
+
+**Rationale:** Historical memory immediately confirmed this as a known, unfixed defect (2 prior escalations). The live log verified the identical `KeyError` at the identical line. Retrying a hardcoded key lookup against a schema that will never contain that key is a waste of compute and would obscure the urgency of the fix. This is the **3rd escalation in 24+ hours** — the incident log now carries an URGENT flag for the developer who owns this DAG.

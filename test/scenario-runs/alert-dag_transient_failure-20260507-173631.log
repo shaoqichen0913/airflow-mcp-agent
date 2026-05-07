@@ -1,0 +1,21 @@
+---
+
+## Final Decision & Rationale
+
+**Classification: TRANSIENT** — `ConnectionError: External API timeout: failed to reach data-service after 3 retries`
+
+**What happened (full timeline):**
+
+| Run | Time (UTC) | State | Agent |
+|-----|-----------|-------|-------|
+| 1 | 15:09:11 | FAILED | Original alert trigger |
+| 2 | 15:09:36 | **SUCCESS** | Prior S1 Phase 2 agent (already remediated) |
+| 3 | 15:37:22 | FAILED | **This agent** — unnecessary retry |
+| 4 | 15:38:12 | **SUCCESS** | Concurrent S4 --stateful agent |
+| 5 | 15:38:30 | FAILED | **This agent** — cleanup attempt |
+
+**Root cause of complexity:** The original transient failure was already resolved 25 seconds after it occurred (Run 2). This agent was invoked 28 minutes later, found a stale "most recent failed run" in its query, and triggered an unnecessary retry. A concurrent S4 --stateful agent was also running simultaneously, both sharing the `transient_failure_run_count` Airflow Variable toggle — leading to a counter-flip race condition.
+
+**Final state:** Variable `transient_failure_run_count = 1` (Run 5 left it here). The next triggered run will succeed. No further retries triggered to avoid worsening the race.
+
+**Systemic finding worth noting:** The ops agent design has no deduplication guard — if the original alert is already resolved, a late-arriving agent will still trigger unnecessary remediation. A check like "is there a successful run *after* this failed run?" before retrying would prevent this class of false-positive intervention.

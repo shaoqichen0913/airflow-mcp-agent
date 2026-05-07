@@ -16,5 +16,23 @@
     "diagnosis": "Same deterministic code bug confirmed via historical record match (2026-05-06). schema_dict at line 9 of dag_code_bug.py accesses key 'user_id' which does not exist in the dict. Code has not been fixed since prior incident. Retrying is pointless — this is a pure code defect.",
     "action_taken": "Skipped retry analysis (history confirms retries ineffective). Escalated again to human with reference to prior incident. Fix required: add 'user_id' to schema_dict keys in dag_code_bug.py line 9, or replace the key access with the correct field name.",
     "outcome": "re-escalated to human — fix still pending"
+  },
+  {
+    "timestamp": "2026-05-07T15:30:00Z",
+    "dag_id": "dag_code_bug",
+    "error_type": "KeyError",
+    "error_message": "KeyError: 'user_id'",
+    "diagnosis": "Third occurrence of the same deterministic code bug. Historical record (2 prior entries) recalled before diagnosis — confirmed identical error, same code path. dags/dag_code_bug.py line 9: schema_dict['user_id'] fails because schema only contains ['username', 'email', 'created_at']. Bug has been open >24h with no fix applied.",
+    "action_taken": "Escalated to human (3rd escalation). No retry triggered — historical record confirms retries are always ineffective for this bug. URGENT flag raised: fix overdue.",
+    "outcome": "escalated_no_retry — urgent, 3rd occurrence, fix still not applied"
+  },
+  {
+    "timestamp": "2026-05-07T15:38:30Z",
+    "dag_id": "dag_transient_failure",
+    "error_type": "TRANSIENT",
+    "error_message": "ConnectionError: External API timeout: failed to reach data-service after 3 retries",
+    "diagnosis": "Transient ConnectionError in task sync_data (dag_transient_failure.py:16). DAG uses Airflow Variable 'transient_failure_run_count' as a toggle: count=0 → fail, count>0 → succeed. Original alert (run manual__2026-05-07T15:09:11) was already remediated by a prior S1 agent run at 15:09:36 (SUCCESS). This agent arrived late (15:37) and triggered an unnecessary retry that re-entered the failure cycle. A concurrent S4 --stateful agent consumed the counter (Run 4 success at 15:38:12), causing this agent's subsequent cleanup run (Run 5 at 15:38:30) to also fail. Race condition: two agents responded to the same alert with no coordination, both reading/writing the shared variable toggle.",
+    "action_taken": "Classified as TRANSIENT. Triggered retry (Run 3) — failed because original was already resolved. Triggered cleanup (Run 5) — failed due to race with concurrent S4 agent. Halted further retries to prevent cascade. Final state: variable=1 (next run will succeed).",
+    "outcome": "original_alert_already_resolved — prior S1 agent succeeded at 15:09:36. This agent's retries created counter-flip race with concurrent S4 agent. DAG left with variable=1; no further action taken."
   }
 ]

@@ -1,0 +1,50 @@
+**Step 3 result:** Log captured. Key traceback:
+
+```
+File "/opt/airflow/dags/dag_code_bug.py", line 9, in process_records
+    required_field = schema_dict["user_id"]
+KeyError: 'user_id'
+```
+
+---
+
+**Step 4 — Error classification.**
+
+**Classification: DETERMINISTIC**
+
+Evidence from the log:
+- Exception type: `KeyError: 'user_id'`
+- Location: `dags/dag_code_bug.py`, line 9, function `process_records`
+- The code attempts `schema_dict["user_id"]` but the schema only contains `["username", "email", "created_at"]` — `"user_id"` was never in the schema
+- `retries=0` confirms the author already knew retrying won't help
+- This is a static code defect — every run will fail identically regardless of timing, environment, or retry
+
+This is **not transient**. No network call, no external resource, no temporal condition. The bug is in the source code itself.
+
+---
+
+**Step 5b — Escalation (DETERMINISTIC — no retry).**
+
+```
+ESCALATION REPORT
+=================
+DAG ID:          dag_code_bug
+Run ID:          manual__2026-05-07T15:09:11.832144+00:00
+Failed Task:     process_records
+Error Type:      DETERMINISTIC
+Error Class:     KeyError
+Root Cause:      Function process_records attempts to look up "user_id" in a
+                 schema dict built from ["username", "email", "created_at"],
+                 but "user_id" is not present in that schema.
+Affected Code:   dags/dag_code_bug.py, line 9 — schema_dict["user_id"]
+Recommended Fix: Either add "user_id" to the schema list on line 7, or replace
+                 the hardcoded key lookup with the correct field name that
+                 exists in the schema (e.g., "username"). A developer must
+                 decide which field is actually required and correct the schema
+                 definition accordingly.
+Retry Advised:   NO — retrying will not resolve a code-level bug
+```
+
+---
+
+**Rationale:** The failure is a hardcoded `KeyError` in the DAG source. The code path is deterministic — every execution will hit line 9, build the same `schema_dict`, and fail identically on the missing key `"user_id"`. Triggering a new run would waste compute and create noise. A developer must fix `dags/dag_code_bug.py` before this DAG can succeed.
