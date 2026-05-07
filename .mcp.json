@@ -8,6 +8,13 @@
         "AIRFLOW_USERNAME": "admin",
         "AIRFLOW_PASSWORD": "admin"
       }
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "YOUR_GITHUB_TOKEN_HERE"
+      }
     }
   }
 }
