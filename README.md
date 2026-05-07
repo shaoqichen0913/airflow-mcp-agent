@@ -10,10 +10,10 @@ Four progressive scenarios:
 
 | Scenario | What it tests |
 |---|---|
-| **S3** Scheduled Review | Agent generates daily DAG health report on a cron schedule |
 | **S1** Autonomous Ops | Agent receives an alert and self-diagnoses: retry vs. human escalation |
-| **S4** Stateful Agent | Same as S1, but agent recalls past incidents — tests whether historical context improves decisions |
 | **S2** Multi-tool Workflow | DAG failure → trace to commit → open GitHub Issue notifying the author |
+| **S3** Scheduled Review | Agent generates daily DAG health report on a cron schedule |
+| **S4** Stateful Agent | Same as S1, but agent recalls past incidents — tests whether historical context improves decisions |
 
 ## Stack
 
@@ -81,27 +81,30 @@ airflow-mcp-agent/
 
 ## Running the scenarios
 
-### S3 — Scheduled Review
-```bash
-bash scripts/trigger_report.sh
-# Output written to test/scenario3-reports/
-```
-
 ### S1 — Autonomous Ops
 ```bash
 bash scripts/trigger_alert.sh dag_transient_failure  # should auto-retry
 bash scripts/trigger_alert.sh dag_code_bug           # should escalate
 ```
 
-### S4 — Stateful Agent
-Run S1 first to populate `incident_log.json`, then run the same alerts again and observe whether the agent recalls history.
-
 ### S2 — Multi-tool Workflow
-Requires GitHub PAT in environment:
+Requires a GitHub PAT with `repo` scope set in `.mcp.json`:
 ```bash
-export GITHUB_TOKEN=your_pat_here
-bash scripts/trigger_alert.sh dag_pipeline_failure
+bash scripts/trigger_alert.sh dag_pipeline_failure --multi-tool
 # Agent will open a GitHub Issue in this repo
+```
+
+### S3 — Scheduled Review
+```bash
+bash scripts/trigger_report.sh
+# Output written to test/scenario3-reports/
+```
+
+### S4 — Stateful Agent
+Run S1 first to populate `incident_log.json`, then run the same alerts again and observe whether the agent recalls history:
+```bash
+bash scripts/trigger_alert.sh dag_transient_failure --stateful
+bash scripts/trigger_alert.sh dag_code_bug --stateful
 ```
 
 ## Test results
