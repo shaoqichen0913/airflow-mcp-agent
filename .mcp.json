@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "airflow": {
+      "command": "uvx",
+      "args": ["mcp-server-apache-airflow"],
+      "env": {
+        "AIRFLOW_HOST": "http://localhost:8080",
+        "AIRFLOW_USERNAME": "admin",
+        "AIRFLOW_PASSWORD": "admin"
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Airflow
+logs/
+airflow.db
+airflow.cfg
+
+# Local Claude Code settings (contains personal permissions)
+.claude/settings.local.json
+
+# Environment
+.env
+
+# macOS
+.DS_Store
