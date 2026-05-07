@@ -6,13 +6,13 @@ def validate_schema():
     print("Schema validation passed. Fields: event_timestamp, user_id, action_type")
 
 def process_data():
-    # Simulate processing records with event_timestamp field
+    # Schema updated: event_timestamp renamed to ts
     records = [
-        {"event_timestamp": "2026-05-07T10:00:00Z", "user_id": "u123", "action_type": "click"},
-        {"event_timestamp": "2026-05-07T10:01:00Z", "user_id": "u456", "action_type": "view"},
+        {"ts": "2026-05-07T10:00:00Z", "user_id": "u123", "action_type": "click"},
+        {"ts": "2026-05-07T10:01:00Z", "user_id": "u456", "action_type": "view"},
     ]
     for record in records:
-        ts = record["event_timestamp"]  # Works fine in this version
+        ts = record["event_timestamp"]  # BUG: field was renamed to 'ts' in this commit
         print(f"Processing event at {ts}")
     print(f"Processed {len(records)} records successfully.")
 
