@@ -21,5 +21,14 @@ airflow.cfg
 
 # Blog drafts (personal, not for public repo)
 blog-draft.md
+blog-*.md
 abstract_blog.md
+LinkedIn-post-draft.md
+report-*-skill.md
 blog-graph/
+
+# Local writing/editor skills used for drafting
+.claude/skills/
+
+# Local MCP experiments not used by the current README path
+airflow-proxy.py
