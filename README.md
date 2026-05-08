@@ -2,9 +2,13 @@
 
 A POC demonstrating AI agents operating Apache Airflow autonomously via MCP (Model Context Protocol).
 
+## Context
+
+This repo accompanies the Airflow MCP agent write-up. It is not a production-ready agent runtime; it is a reproducible local POC with the DAGs, prompts, trigger scripts, incident memory, and test records used to evaluate whether an AI agent can close a narrow Airflow failure-response loop.
+
 ## What this tests
 
-Can an AI agent — given only a DAG ID and an alert — diagnose failures, decide whether to retry or escalate, and act on that decision, **without a single human instruction**?
+Can an AI agent — given only a DAG ID and an alert — diagnose failures, decide whether to retry or escalate, and act on that decision **after the initial trigger, without step-by-step human guidance**?
 
 Four progressive scenarios:
 
@@ -12,7 +16,7 @@ Four progressive scenarios:
 |---|---|
 | **S1** Autonomous Ops | Agent receives an alert and self-diagnoses: retry vs. human escalation |
 | **S2** Multi-tool Workflow | DAG failure → trace to commit → open GitHub Issue notifying the author |
-| **S3** Scheduled Review | Agent generates daily DAG health report on a cron schedule |
+| **S3** Scheduled Review | Agent simulates a scheduled daily DAG health report |
 | **S4** Stateful Agent | Same as S1, but agent recalls past incidents — tests whether historical context improves decisions |
 
 ## Stack
@@ -23,6 +27,8 @@ Four progressive scenarios:
 | MCP Server | [mcp-server-apache-airflow](https://github.com/yangkyeongmo/mcp-server-apache-airflow) |
 | Agent | Claude Code (claude.ai/code) |
 | Notifications | GitHub Issues (S2) |
+
+Airflow does not currently have an official MCP server. This POC uses one community implementation, `mcp-server-apache-airflow`, tested against Airflow 2.9.3 with Basic Auth. Some early test notes mention a previous proxy-based MCP setup; the current repo config in `.mcp.json` uses `mcp-server-apache-airflow` directly.
 
 ## Prerequisites
 
