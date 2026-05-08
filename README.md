@@ -21,12 +21,13 @@ Four progressive scenarios:
 
 ## Stack
 
-| Layer | Tool |
-|---|---|
-| Orchestrator | Apache Airflow 2.9.3 (Docker Compose) |
-| MCP Server | [mcp-server-apache-airflow](https://github.com/yangkyeongmo/mcp-server-apache-airflow) |
-| Agent | Claude Code (claude.ai/code) |
-| Notifications | GitHub Issues (S2) |
+| Layer | Tool | Used for |
+|---|---|---|
+| Orchestrator | [Apache Airflow 2.9.3](https://airflow.apache.org/) | Local DAG runtime and REST API target |
+| Tool protocol | [Model Context Protocol](https://modelcontextprotocol.io/) | Standard interface for agent tool calls |
+| Airflow MCP server | [yangkyeongmo/mcp-server-apache-airflow](https://github.com/yangkyeongmo/mcp-server-apache-airflow) | DAG runs, task instances, logs, and triggers |
+| Agent runtime | [Claude Code](https://claude.ai/code) | Local non-interactive agent execution |
+| GitHub MCP server (S2) | [`@modelcontextprotocol/server-github`](https://www.npmjs.com/package/@modelcontextprotocol/server-github) | Commit lookup and GitHub Issue creation; this package is now deprecated on npm |
 
 Airflow does not currently have an official MCP server. This POC uses one community implementation, `mcp-server-apache-airflow`, tested against Airflow 2.9.3 with Basic Auth. Some early test notes mention a previous proxy-based MCP setup; the current repo config in `.mcp.json` uses `mcp-server-apache-airflow` directly.
 
