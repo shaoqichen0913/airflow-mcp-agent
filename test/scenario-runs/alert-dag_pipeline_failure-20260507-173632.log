@@ -32,6 +32,6 @@ This commit updated the data records to use `"ts"` as the key but left the consu
 
 ### GitHub Issue
 
-**Issue #2 opened:** https://github.com/shaoqichen0913/airflow-mcp-agent/issues/2
+**Issue #2 opened:** https://github.com/shaoqichen0913/airflow-mcp-agent-poc/issues/2
 
 The issue includes the full traceback, the suspected commit SHA (`ebdc95c`), author, date, and a one-step fix recommendation: change `record["event_timestamp"]` → `record["ts"]` at `dags/dag_pipeline_failure.py:15`.

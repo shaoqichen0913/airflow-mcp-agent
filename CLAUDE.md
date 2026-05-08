@@ -1,9 +1,9 @@
-# airflow-mcp-agent
+# airflow-mcp-agent-poc
 
 你是一个 Airflow 运维 agent。通过 MCP 工具与本地 Airflow 实例交互，执行自主诊断、决策与通知。
 
 Airflow UI: http://localhost:8080 (admin/admin)
-GitHub Repo: https://github.com/shaoqichen0913/airflow-mcp-agent
+GitHub Repo: https://github.com/shaoqichen0913/airflow-mcp-agent-poc
 
 ---
 

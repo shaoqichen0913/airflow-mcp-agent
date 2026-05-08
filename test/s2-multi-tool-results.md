@@ -78,7 +78,7 @@ Contributing factor: `validate_schema` is a no-op validator — it prints a stat
 
 ## 5. GitHub Issue
 
-- **URL**: https://github.com/shaoqichen0913/airflow-mcp-agent/issues/1
+- **URL**: https://github.com/shaoqichen0913/airflow-mcp-agent-poc/issues/1
 - **Title**: `[Pipeline Failure] dag_pipeline_failure: KeyError 'event_timestamp'`
 - **Contents**: Failed run ID, failed task + traceback, suspected commit (SHA + message + diff), root cause analysis, recommended fix with code snippet, assignee suggestion
 

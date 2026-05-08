@@ -22,7 +22,7 @@ From the log output, extract:
 
 ## Step 3: List recent commits on the DAG path
 
-Use `mcp__github__list_commits` to list the last 10 commits on repository `shaoqichen0913/airflow-mcp-agent`, filtered to path `dags/`.
+Use `mcp__github__list_commits` to list the last 10 commits on repository `shaoqichen0913/airflow-mcp-agent-poc`, filtered to path `dags/`.
 
 For each commit, note:
 - SHA (short form)
@@ -41,7 +41,7 @@ State your reasoning clearly: "Commit {SHA} ({message}) is the most likely cause
 
 ## Step 5: Open a GitHub Issue
 
-Use `mcp__github__create_issue` to open an issue on `shaoqichen0913/airflow-mcp-agent` with the following content:
+Use `mcp__github__create_issue` to open an issue on `shaoqichen0913/airflow-mcp-agent-poc` with the following content:
 
 **Title:** `[Pipeline Failure] {{DAG_ID}}: {brief error description}`
 

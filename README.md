@@ -1,4 +1,4 @@
-# airflow-mcp-agent
+# airflow-mcp-agent-poc
 
 A POC demonstrating AI agents operating Apache Airflow autonomously via MCP (Model Context Protocol).
 
@@ -48,7 +48,7 @@ docker compose up -d
 open http://localhost:8080  # admin / admin
 
 # 3. Open project in Claude Code
-cd airflow-mcp-agent
+cd airflow-mcp-agent-poc
 claude
 ```
 
@@ -57,7 +57,7 @@ Claude Code will auto-load the MCP server via `.mcp.json`. Run `claude mcp list`
 ## Repository structure
 
 ```
-airflow-mcp-agent/
+airflow-mcp-agent-poc/
 ├── dags/                    # Airflow DAG files
 │   ├── happy_path.py
 │   ├── failure_simple.py
