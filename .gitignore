@@ -18,3 +18,8 @@ airflow.cfg
 
 # macOS
 .DS_Store
+
+# Blog drafts (personal, not for public repo)
+blog-draft.md
+abstract_blog.md
+blog-graph/
